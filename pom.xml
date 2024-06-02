@@ -120,6 +120,11 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>9.2.0</version>
+            </plugin>
         </plugins>
         <finalName>starwars</finalName>
     </build>

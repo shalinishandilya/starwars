@@ -11,6 +11,14 @@ pipeline {
             }
         }
 
+        stage('OWASP Dependency-Check') {
+            steps {
+              script {
+               sh 'mvn org.owasp:dependency-check-maven:6.1.5:check'
+                }
+             }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -27,6 +35,14 @@ pipeline {
                   }
                    sh 'docker tag shalini19/starwars shalini19/starwars:latest'
                    sh 'docker push shalini19/starwars:latest'
+                }
+            }
+        }
+
+         stage('Deploy to K8s') {
+            steps {
+                script{
+                    kubernetesDeploy (configs: 'deploymentservice.yaml',kubeconfigId: 'kubernetes_config_pwd')
                 }
             }
         }
