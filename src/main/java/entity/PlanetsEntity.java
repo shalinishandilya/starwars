@@ -1,9 +1,12 @@
-package com.shalini.starwars.model;
+package entity;
 
+
+import lombok.Data;
 
 import java.util.List;
 
-public class StarWarsEntity {
+@Data
+public class PlanetsEntity extends StarWarsEntity {
     private String type;
     private String name;
     private String rotationPeriod;
@@ -21,7 +24,7 @@ public class StarWarsEntity {
     private List<String> residents;
     private List<String> films;
 
-    public StarWarsEntity(Builder builder) {
+    public PlanetsEntity(Builder builder) {
         this.type = builder.type;
         this.name = builder.name;
         this.rotationPeriod = builder.rotationPeriod;
@@ -122,8 +125,8 @@ public class StarWarsEntity {
             return this;
         }
 
-        public StarWarsEntity build() {
-            return new StarWarsEntity(this);
+        public PlanetsEntity build() {
+            return new PlanetsEntity(this);
         }
 
         public Builder setEdited(String edited) {

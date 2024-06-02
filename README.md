@@ -14,7 +14,7 @@ The Star Wars application is a Spring Boot-based RESTful API that allows users t
 
 ## Prerequisites
 
-- Java 11 or higher
+- Java 17 or higher
 - Maven 3.6.0 or higher
 - Docker (optional, for containerization)
 - Git (for version control)
@@ -50,3 +50,10 @@ GET /api/v1/starwars?type=planets&name=Tatooine&offlineMode=false
 
 ### Sequence Diagram
 ![img.png](img.png)
+
+### Design Patterns
+- Builder Design Pattern
+- Singleton Design Pattern
+
+### Fault Tolerance Mechanism
+- Circuit Breaker Pattern

@@ -6,6 +6,7 @@ FROM openjdk:17-jdk-slim AS final
 EXPOSE 8080
 
 ADD target/starwars.jar starwars.jar
+
 # Define the command to run your Spring Boot application when the container starts
 
 ENTRYPOINT ["java","-jar","/starwars.jar"]

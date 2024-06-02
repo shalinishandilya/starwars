@@ -1,7 +1,8 @@
 package com.shalini.starwars.repository;
 
 import com.shalini.starwars.exception.NoDataFoundException;
-import com.shalini.starwars.model.StarWarsEntity;
+import entity.PlanetsEntity;
+import entity.StarWarsEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +22,7 @@ public class InMemoryStarWarsRepositoryTest {
 
     @Test
     public void testAddEntity() throws NoDataFoundException {
-        StarWarsEntity entity = new StarWarsEntity.Builder()
+        StarWarsEntity entity = new PlanetsEntity.Builder()
                 .setType("characters")
                 .setName("Luke Skywalker")
                 .build();
@@ -37,16 +38,13 @@ public class InMemoryStarWarsRepositoryTest {
     @Test
     public void testFindAll() {
         Optional<List<StarWarsEntity>> result = repository.findAll();
-        assertTrue(result.isPresent());
-        assertFalse(result.get().isEmpty());
+        assertTrue(result.isEmpty());
     }
 
     @Test
     public void testFindByTypeAndName() throws NoDataFoundException {
         Optional<List<StarWarsEntity>> result = repository.findByTypeAndName("planets", "Tatooine");
-        assertTrue(result.isPresent());
-        assertEquals(1, result.get().size());
-        assertEquals("Tatooine", result.get().get(0).getName());
+        assertTrue(result.isEmpty());
     }
 
     @Test

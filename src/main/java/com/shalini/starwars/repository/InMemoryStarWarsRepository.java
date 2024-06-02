@@ -1,7 +1,7 @@
 package com.shalini.starwars.repository;
 
 import com.shalini.starwars.exception.NoDataFoundException;
-import com.shalini.starwars.model.StarWarsEntity;
+import entity.StarWarsEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -11,27 +11,11 @@ import java.util.stream.Collectors;
 @Slf4j
 @Repository
 public class InMemoryStarWarsRepository {
-    private final Map<String, Map<String, StarWarsEntity>> dataStore = new HashMap<>();
+    private Map<String, Map<String, StarWarsEntity>> dataStore = new HashMap<>();
     private static InMemoryStarWarsRepository instance;
 
-    private Map<String, List<StarWarsEntity>> data;
-
     private InMemoryStarWarsRepository() {
-        data = new HashMap<>();
-        addEntity(new StarWarsEntity.Builder()
-                .setType("planets")
-                .setName("Tatooine")
-                .setRotationPeriod("23")
-                .setOrbitalPeriod("304")
-                .setDiameter("10465")
-                .setClimate("arid")
-                .setGravity("1 standard")
-                .setTerrain("desert")
-                .setSurfaceWater("1")
-                .setPopulation("200000")
-                .setResidents(List.of("https://swapi.dev/api/people/1/"))
-                .setFilms(List.of("https://swapi.dev/api/films/1/"))
-                .build());
+        dataStore = new HashMap<>();
     }
 
     public static synchronized InMemoryStarWarsRepository getInstance() {
@@ -43,10 +27,8 @@ public class InMemoryStarWarsRepository {
     }
 
     public void addEntity(StarWarsEntity entity) {
-        log.info("Adding entity: {}", entity);
         dataStore.computeIfAbsent(entity.getType(), k -> new HashMap<>())
                 .put(entity.getName().toLowerCase(), entity);
-        log.debug("Current data store state: {}", dataStore);
     }
 
     public Optional<List<StarWarsEntity>> findAll() {
@@ -62,12 +44,16 @@ public class InMemoryStarWarsRepository {
     public Optional<List<StarWarsEntity>> findByTypeAndName(String type, String name)
             throws NoDataFoundException {
         log.info("Fetching entities by type: {} and name: {}", type, name);
-        if (type == null || name == null) {
+        if (type == null) {
             log.error("Type or name is null. Throwing NoDataFoundException");
             throw new NoDataFoundException("No Data in Cache");
         }
-        Optional<StarWarsEntity> entity = Optional.ofNullable(dataStore.getOrDefault(type, new HashMap<>())
-                .get(name.toLowerCase()));
+        if (name == null) {
+            return findAll();
+        }
+        Optional<StarWarsEntity> entity =
+                Optional.ofNullable(dataStore.getOrDefault(type, new HashMap<>()).get(name.toLowerCase()));
+
         if (entity.isPresent()) {
             log.info("Entity found: {}", entity.get());
             return Optional.of(Collections.singletonList(entity.get()));

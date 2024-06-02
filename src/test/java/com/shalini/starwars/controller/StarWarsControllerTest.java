@@ -1,8 +1,9 @@
 package com.shalini.starwars.controller;
 
 import com.shalini.starwars.exception.NoDataFoundException;
-import com.shalini.starwars.model.StarWarsEntity;
 import com.shalini.starwars.service.StarWarsService;
+import entity.PlanetsEntity;
+import entity.StarWarsEntity;
 import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,7 @@ public class StarWarsControllerTest {
     @Test
     public void testGetEntity_Success() throws NoDataFoundException, BadRequestException {
 
-        List<StarWarsEntity> entities = Collections.singletonList(new StarWarsEntity(new StarWarsEntity.Builder()));
+        List<StarWarsEntity> entities = Collections.singletonList(new PlanetsEntity(new PlanetsEntity.Builder()));
 
 
         when(starWarsService.findByTypeAndName("type", "name", false)).thenReturn(Optional.of(entities));

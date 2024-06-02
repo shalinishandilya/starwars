@@ -1,8 +1,8 @@
 package com.shalini.starwars.controller;
 
 import com.shalini.starwars.exception.NoDataFoundException;
-import com.shalini.starwars.model.StarWarsEntity;
 import com.shalini.starwars.service.StarWarsService;
+import entity.StarWarsEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -36,8 +36,8 @@ public class StarWarsController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<List<StarWarsEntity>> getEntity(@RequestParam(required = true) String type,
-                                                          @RequestParam(required = false) String name,
-                                                          @RequestParam(required = false) boolean offlineMode)
+                                             @RequestParam(required = false) String name,
+                                             @RequestParam(required = false) boolean offlineMode)
             throws NoDataFoundException, BadRequestException {
         if (type == null) {
             throw new BadRequestException("Resource Not Found");

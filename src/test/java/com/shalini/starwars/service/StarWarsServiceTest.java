@@ -1,8 +1,9 @@
 package com.shalini.starwars.service;
 
 import com.shalini.starwars.exception.NoDataFoundException;
-import com.shalini.starwars.model.StarWarsEntity;
 import com.shalini.starwars.repository.InMemoryStarWarsRepository;
+import entity.PlanetsEntity;
+import entity.StarWarsEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -38,7 +39,7 @@ public class StarWarsServiceTest {
 
     @Test
     public void testFindByTypeAndNameOfflineMode() throws NoDataFoundException {
-        StarWarsEntity entity = new StarWarsEntity.Builder()
+        StarWarsEntity entity = new PlanetsEntity.Builder()
                 .setType("planets")
                 .setName("Tatooine")
                 .build();
@@ -56,7 +57,8 @@ public class StarWarsServiceTest {
         String jsonResponse = "{ \"results\": [ { \"name\": \"Tatooine\", \"rotation_period\": \"23\", \"orbital_period\": \"304\", \"diameter\": \"10465\", \"climate\": \"arid\", \"gravity\": \"1 standard\", \"terrain\": \"desert\", \"surface_water\": \"1\", \"population\": \"200000\", \"residents\": [ \"https://swapi.dev/api/people/1/\" ], \"films\": [ \"https://swapi.dev/api/films/1/\" ], \"created\": \"2014-12-09T13:50:49.641000Z\", \"edited\": \"2014-12-20T20:58:18.411000Z\", \"url\": \"https://swapi.dev/api/planets/1/\" } ] }";
         when(restTemplate.exchange(anyString(), any(), any(), eq(String.class))).thenReturn(new ResponseEntity<>(jsonResponse, HttpStatus.OK));
 
-        Optional<List<StarWarsEntity>> result = starWarsService.findByTypeAndName("planets", "Tatooine", false);
+        Optional<List<StarWarsEntity>> result =
+                starWarsService.findByTypeAndName("planets", "Tatooine", false);
 
         assertTrue(result.isPresent());
         assertEquals(1, result.get().size());
