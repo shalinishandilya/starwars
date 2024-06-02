@@ -21,7 +21,7 @@ public class StarWarsEntity {
     private List<String> residents;
     private List<String> films;
 
-    private StarWarsEntity(Builder builder) {
+    public StarWarsEntity(Builder builder) {
         this.type = builder.type;
         this.name = builder.name;
         this.rotationPeriod = builder.rotationPeriod;

@@ -5,6 +5,7 @@ import com.shalini.starwars.exception.NoDataFoundException;
 import com.shalini.starwars.model.StarWarsEntity;
 import com.shalini.starwars.repository.InMemoryStarWarsRepository;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
+@Slf4j
 @Service
 public class StarWarsService {
 
@@ -36,8 +38,11 @@ public class StarWarsService {
     @CircuitBreaker(name = ApplicationConstants.CIRCUIT_BREAKER_INSTANCE_STAR_WARS_DATA,
             fallbackMethod = ApplicationConstants.CIRCUIT_BREAKER_FALLBACK_FIND_STAR_WARS_DATA)
     public Optional<List<StarWarsEntity>> findByTypeAndName(String type, String name, boolean offlineMode) throws NoDataFoundException {
+        log.info("Finding Star Wars entities by type: {} and name: {} with offlineMode: {}", type, name, offlineMode);
+
         List<StarWarsEntity> entities = new ArrayList<>();
         if (offlineMode) {
+            log.info("Offline mode is enabled. Fetching from repository.");
             return repository.findByTypeAndName(type, name);
         } else {
             String url = SWAPI_BASE_URL;
@@ -49,6 +54,7 @@ public class StarWarsService {
             }
             boolean hasNextPage = true;
             while (hasNextPage) {
+                log.info("Making a request to SWAPI with URL: {}", url);
                 ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
                 if (responseEntity.getStatusCode() == HttpStatus.OK) {
                     JSONObject jsonResponse = new JSONObject(responseEntity.getBody());
@@ -80,15 +86,19 @@ public class StarWarsService {
                     } else {
                         hasNextPage = false;
                     }
+                    log.info("Next URL: {}", nextUrl);
                 } else {
+                    log.error("Failed to fetch data from SWAPI. Status code: {}", responseEntity.getStatusCode());
                     hasNextPage = false;
                 }
             }
         }
+        log.info("Found {} entities", entities.size());
         return Optional.of(entities);
     }
 
     private Optional<List<StarWarsEntity>> findStarWarsData(Throwable throwable) throws Throwable {
+        log.info("Fallback method triggered due to: {}", throwable.getMessage());
         return repository.findAll();
     }
 }
