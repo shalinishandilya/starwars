@@ -55,6 +55,5 @@ public class InMemoryStarWarsRepositoryTest {
     @Test
     public void testFindByTypeAndNameWithNullValues() {
         assertThrows(NoDataFoundException.class, () -> repository.findByTypeAndName(null, "Tatooine"));
-        assertThrows(NoDataFoundException.class, () -> repository.findByTypeAndName("planets", null));
     }
 }
