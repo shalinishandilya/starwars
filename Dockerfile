@@ -3,7 +3,7 @@ FROM openjdk:17-jdk-slim AS final
 
 # Expose the port that the Spring Boot application will run on
 
-EXPOSE 8080
+EXPOSE 9092
 
 ADD target/starwars.jar starwars.jar
 

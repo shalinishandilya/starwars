@@ -57,3 +57,22 @@ GET /api/v1/starwars?type=planets&name=Tatooine&offlineMode=false
 
 ### Fault Tolerance Mechanism
 - Circuit Breaker Pattern
+
+
+### Jenkins commands
+- brew services start jenkins-lts
+- brew services restart jenkins-lts
+- brew services stop jenkins-lts
+
+### Brew commands
+- brew services list
+
+### minikube commands
+
+-  minikube start
+-  minikube status 
+-  kubectl get nodes
+-  kubectl get pods 
+-  kubectl get deployments
+-  kubectl logs <servicename>
+- 
