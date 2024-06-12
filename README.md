@@ -58,6 +58,10 @@ GET /api/v1/starwars?type=planets&name=Tatooine&offlineMode=false
 ### Fault Tolerance Mechanism
 - Circuit Breaker Pattern
 
+### Docker commands
+docker ps
+docker-compose up -d
+docker-compse down
 
 ### Jenkins commands
 - brew services start jenkins-lts
@@ -75,4 +79,3 @@ GET /api/v1/starwars?type=planets&name=Tatooine&offlineMode=false
 -  kubectl get pods 
 -  kubectl get deployments
 -  kubectl logs <servicename>
-- 
